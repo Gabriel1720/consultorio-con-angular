@@ -1,0 +1,223 @@
+
+<div class="container">
+    <div class="w-75 mx-auto px-4 mt-5" style="max-width: 450px;">
+        <div class="formulario">
+            <form [formGroup]="myForm">
+                <fieldset id="box1">
+                    <h2 class="mb-4">Datos del paciente</h2>
+                    <i>(Informacion personal)</i> <br>
+
+                    <label>Nombre: </label>
+                    <div class="form-group mr-2">
+                        <input formControlName="nombre" type="text" placeholder="Nombre del paciente" class="form-control">
+                        <div *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)"> 
+                            <span class="text-danger">*El nombre es requerida*</span>
+                        </div>
+                    </div>
+                    <label>Apellido: </label>
+                    <div class="form-group">
+                        <input formControlName="apellido" type="text" placeholder="Apellido del paciente" class="form-control">
+                        <div *ngIf="apellido.invalid && (apellido.dirty || apellido.touched)"> 
+                            <span class="text-danger">*El apellido es requerido*</span>
+                        </div>
+                    </div>
+                    <label>Fecha de nacimiento: </label>
+                    <div class="form-group">
+                        <input formControlName="fecha_nac" type="datetime-local" class="form-control">
+                        <div *ngIf="fecha_nac.invalid && (fecha_nac.dirty || fecha_nac.touched)"> 
+                            <span class="text-danger">*La fecha de nacimiento es requerida</span>
+                        </div>
+                    </div>
+                    <div class="radio-group mt-2">
+                        <div class="row">
+                            <legend class="col-form-label col-sm-2 pt-0">Sexo</legend>
+                            <div class="col-sm-10">
+                              <div class="form-check">
+                                <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" #rbt1 value="option1" checked>
+                                <label class="form-check-label" for="gridRadios1">
+                                  Hombre
+                                </label>
+                              </div>
+                              <div class="form-check">
+                                <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" #rbt2 value="option2">
+                                <label class="form-check-label" for="gridRadios2">
+                                  Mujer
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+                    </div>
+                     <div class="form-group mt-3">
+                        <button [disabled]="!firstFormValidation()" class="btn btn-primario w-75 ml-2 mt-3" (click)="NextBox()">Siguiente</button>
+                    </div> 
+                </fieldset>
+                <fieldset id="box2" class="d-none">
+                     <h3>Datos del paciente</h3>
+                     <i>(Datos de autenticidad)</i>
+                    <div>
+                        <div class="mt-3">
+                            <div class="form-group">
+                                <span>Correo: </span>
+                                <input formControlName="email" type="email" placeholder="paciente@ejemplo.com" class="form-control">
+                                <div *ngIf="email.invalid && (email.dirty || email.touched)"> 
+                                    <span class="text-danger" *ngIf="email.errors.required">*El correo es requerido*</span>
+                                    <span class="text-danger" *ngIf="email.errors.email">*Introduzca un correo valido*</span>
+                                </div>                                          
+                            </div>
+                            <div class="form-group">
+                                <span>Cedula: </span>
+                                <input formControlName="cedula" type="number" placeholder="Cedula o ID" class="form-control">
+                                <div *ngIf="cedula.invalid && (cedula.dirty || cedula.touched)"> 
+                                    <span class="text-danger">*La cedula es requerida</span>
+                                </div>
+                            </div>
+                        </div> 
+
+                        <i>(Datos de salud)</i>
+                        <div class="mt-3">
+                            <label>Tipo de sangre</label>
+                            <div class="form-group">
+                                <select #sangre class="form-control">
+                                    <option value="A+">A positivo (A+)</option>
+                                    <option value="A-">A negativo (A-)</option>
+                                    <option value="B+">B positivo (B+)</option>
+                                    <option value="B-">B negativo (B-)</option>
+                                    <option value="0+">0 positivo (0+)</option>
+                                    <option value="0-">0 negativo (0-)</option>
+                                    <option value="AB+">AB positivo (AB+)</option>
+                                    <option value="AB-">AB negativo (AB-)</option>
+                                </select>
+                            </div>
+                            <label>Alergias</label>
+                            <div class="form-group">                      
+                                <ng-template [ngIf]="showSelectAlergia" [ngIfElse]="showBoxOtrosAlergias">
+                                    <select #alergia class="form-control" (change)="CambiarBox($event)">
+                                        <option value="">Alergia a los ácaros</option>
+                                        <option value="">Alergia al polen.</option>
+                                        <option value="">Alergia al pelo de animales</option>
+                                        <option value="">Alergia a las picaduras de insectos</option>
+                                        <option value="">Alergia al moho</option>
+                                        <option>Otros</option>
+                                    </select>
+                                </ng-template>
+                                <ng-template #showBoxOtrosAlergias>
+                                    <input #alergia type="text" placeholder="Escribir el nombre de la alergia" class="form-control">
+                                </ng-template>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <button class="btn btn-dark mt-3" (click)="PreviusBox()">Ir atras</button>
+                            <button [disabled]="!secondFormValidation()" class="btn btn-primario ml-2 mt-3" (click)="NextBox()">Siguiente</button>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset id="box4" class="d-none">
+                     <h3>Finalizar el registro</h3>
+                     <div class="d-flex fixed-size">
+                        <div *ngIf="paciente">
+                             <i>(Verificar que todos los datos son correctos)</i>
+                             <div>
+                               <div>
+                                     <div>
+                                         <table>
+                                             <tr>
+                                                 <td>
+                                                     <p class="mt-2">(Informacion personal)</p>
+                                                 </td>
+                                             </tr>
+                                             <tr>
+                                                 <td>
+                                                     <b>Nombre completo: </b>
+                                                 </td>
+                                                 <td>
+                                                     <span>{{paciente.nombre}}</span>
+                                                 </td>
+                                             </tr>
+                                             <tr>
+                                               <td>
+                                                   <b>Fecha de nacimiento: </b>
+                                               </td>
+                                               <td>
+                                                   <span>{{paciente.fecha_nac}}</span>
+                                               </td>
+                                           </tr>
+                                           <tr>
+                                               <td>
+                                                   <b>Sexo: </b>
+                                               </td>
+                                               <td>
+                                                   <span>{{paciente.sexo}}</span>
+                                               </td>
+                                           </tr>
+                                           <tr>
+                                               <td>
+                                                   <p class="mt-2">(Datos legales)</p>
+                                               </td>
+                                           </tr>
+                                           <tr>
+                                               <td>
+                                                   <b>Correo electronico: </b>
+                                               </td>
+                                               <td>
+                                                   <span>{{paciente.email}}</span>
+                                               </td>
+                                           </tr>
+                                           <tr>
+                                               <td>
+                                                   <b>Cedula o ID: </b>
+                                               </td>
+                                               <td>
+                                                   <span>{{paciente.cedula}}</span>
+                                               </td>
+                                           </tr>
+                                           <tr>
+                                               <td>
+                                                   <p class="mt-2">(Datos de salud)</p>
+                                               </td>
+                                           </tr>
+                                           <tr>
+                                            <td>
+                                                <b>Alergias: </b>
+                                            </td>
+                                            <td>
+                                                <span>{{paciente.alergias}}</span>
+                                            </td>
+                                        </tr>
+                                           <tr>
+                                               <td>
+                                                   <b>Tipo de sangre: </b>
+                                               </td>
+                                               <td>
+                                                   <span>{{paciente.tipo_sangre}}</span>
+                                               </td>
+                                           </tr>
+                                         </table>
+                                     </div>
+                               </div>
+                               <div class="mt-3">
+                                   <button class="btn btn-dark" (click)="PreviusBox()">Volver editar</button>
+                                   <button class="btn btn-primary ml-2" (click)="createPatient()">Confirmar y guardar</button>
+                                 </div>
+                             </div>
+                       </div>
+                     </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+
+     <!--Cargar la imagen al local storage como base 64-->
+        <div class="load-img-container d-none shadow-lg" id="box3">
+            <div class="d-flex justify-content-center w-100" style="height: 500px;">
+                <div class="upload-img align-self-center">
+                   <div>
+                       <div class="my-2">
+                        <i class="fas fa-upload"></i>
+                       </div>
+                       <button class="btn btn-primario" (click)="LoadImg()">Subir una foto</button>
+                       <input id="fileImg" type="file" (change)="saveFoto($event)" class="d-none">
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>

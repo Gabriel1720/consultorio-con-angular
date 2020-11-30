@@ -1,0 +1,66 @@
+ <div class="containert-fluid p-0 m-0">
+    <div class="d-flex flex-row  container-box">
+        <section class="menu-container d-none d-md-block" id="menu-container">
+                <div class="menu-close px-4 mt-3">
+                    <i class="fas fa-stream"></i>
+                </div>
+               <div class="menu-box">
+                <div class="avatar-perfil text-center p-3 mt-4">
+                    <div class="d-flex flex-row" *ngIf="medico">
+                        <ng-template [ngIf]="medico.foto" [ngIfElse]="avatar">
+                            <img [src]="medico.foto" width="30" height="30" alt="Avatar" class="avatar">
+                        </ng-template>
+                        <ng-template #avatar>
+                            <i class="far fa-user-circle avatar"></i>
+                        </ng-template>
+                        <a [routerLink]="['/cuenta/perfil']" class="link-perfil"><p class="ml-2 mt-1">{{medico.nombre}}</p></a>
+                    </div>
+                </div>
+                <div class="menu-main mt-4">
+                    <ul class="p-3 mainmenu">
+                        <li>
+                            <i class="fas fa-hospital-user mr-1"></i>
+                            Pacientes
+                            <ul class="submenu">
+                                <li><a [routerLink]="['/cuenta']">Ver listado</a></li>
+                                <li><a [routerLink]="['/cuenta/nuevo-paciente']">Nuevo paciente</a></li>
+                            </ul>
+                        </li> 
+                        <li>
+                            <i class="fas fa-calendar-check  mr-1"></i>
+                            Gestionar citas
+                            <ul class="submenu">
+                                <li><a [routerLink]="['/cuenta/listado-citas']">Ver citas</a></li>
+                                <li><a [routerLink]="['/cuenta/nueva-cita']">Nueva cita</a></li>
+                            </ul>
+                        </li>
+                        <!--<li>
+                            <i class="fas fa-bell  mr-1"></i>
+                            <a [routerLink]="['/cuenta/perfil']"> Notificaciones</a>
+                        </li>-->
+                        <li>
+                            <i class="fas fa-cogs  mr-1"></i>
+                            <a [routerLink]="['/cuenta/configuracion']"> Configuracion</a>
+                           </li>
+                           <li>
+                            <i class="fas fa-sign-out-alt mr-1"></i>
+                            <a (click)="authServices.Logout()">Cerrar</a>
+                           </li>
+                    </ul>
+                </div>
+                <div class="menu-footer px-3">
+                    <p class="text-uppercase" style="font-size: 14px;">Estado</p>
+                     <ul class="px-1">
+                         <li><div class="circulo-status hoy"></div>Hoy: 10</li>
+                         <li><div class="circulo-status ayer"></div>Ayer: 10</li>
+                         <li><div class="circulo-status pacientes"></div>Pacientes: 10</li>
+                         <li><div class="circulo-status consultas"></div>consultas: 10</li>
+                     </ul>
+                </div>
+               </div>
+        </section>
+        <section *ngIf="medico" class="flex-md-grow-1 main-content px-md-5">      
+           <router-outlet></router-outlet>
+        </section>
+    </div>
+</div>
